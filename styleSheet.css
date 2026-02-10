@@ -1,0 +1,88 @@
+body
+
+  {
+    background-image: url("background-image.PNG");
+     background-size: cover;
+  }
+
+
+#questionpanel
+  {
+background-image: url("box.PNG");
+    background-size: cover;        
+    width:300px;
+    height: 450px;
+    border: 5px;
+    border-radius: 30px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 50px;
+    font-size: 20px; 
+    color: aquamarine;
+    
+  }
+
+  button{
+    float:inline-end;
+    padding: 10px;
+    background-color:aquamarine;
+    position: fixed;
+  width: 20%;
+  bottom: 10px;
+  border: 3px solid #8AC007;
+  margin-bottom: 100px;
+  margin-left: 25px;
+  }
+  h3
+  {
+    position: fixed;
+    width: 20%;
+    bottom: 150px;
+    margin-bottom: 100px;
+    margin-left: 50px;
+  }
+    h4
+    {
+      position: fixed;
+      width: 20%;
+      bottom: 150px;
+      margin-bottom: 100px;
+      margin-left: 50px;
+    }
+
+    h5{
+      position: fixed;
+      width: 20%;
+      bottom: 150px;
+      margin-bottom: 100px;
+      margin-left: 50px;
+    }
+
+    input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      transition: border 0.3s ease, background-color 0.3s ease;
+      vertical-align: top;
+    }
+    
+    input[type="radio"]:not(:checked) {
+      background-color: white;
+    }
+    
+    input[type="radio"]:checked {
+      background-color: #5e5e5e;
+      border: 2px solid #5e5e5e;
+      box-shadow: 0 0 10px rgba(83, 83, 83, 0.6);
+    }
+    
+    input[type="radio"]:hover {
+      border-color: #888;
+    }
+
+    
+    

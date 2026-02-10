@@ -1,0 +1,29 @@
+[
+    {
+      "question": "Which of these is the fastest thing in the known universe?",
+      "options": ["Light", "Sound", "Electricity"],
+      "answer": "Light"
+    },
+    {
+      "question": "What is the smallest continent by land area?",
+      "options": ["Australia", "Europe", "Antarctica"],
+      "answer": "Australia"
+    },
+    {
+     "question": "In which year did the Titanic sink?",
+      "options": [1912, 1905, 1920],
+      "answer": 1912  
+    },
+    {
+     "question": "What does 'CPU' stand for in computing?",
+     "options": ["Central Processing Unit", "Computer Processing Unit",  "Control Processing Unit"],
+     "answer":  "Central Processing Unit"
+    },
+    {
+     "question": " Which gas do plants primarily absorb from the atmosphere during photosynthesis?",
+     "options": ["Oxygen", "Carbon Dioxide",  "Nitrogen"],
+     "answer": "Carbon Dioxide"
+    }
+    
+  ]
+  
