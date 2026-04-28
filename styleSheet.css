@@ -1,88 +1,131 @@
-body
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  {
-    background-image: url("background-image.PNG");
-     background-size: cover;
-  }
+body {
+  background-image: url("background-image.PNG");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
 
+#questionpanel {
+  background-image: url("box.PNG");
+  background-size: cover;
+  width: 90%;
+  max-width: 400px;
+  min-height: 450px;
+  border: 5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  padding: 20px;
+  margin: 50px auto;
+  font-size: clamp(16px, 2vw, 20px);
+  color: aquamarine;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
-#questionpanel
-  {
-background-image: url("box.PNG");
-    background-size: cover;        
-    width:300px;
-    height: 450px;
-    border: 5px;
-    border-radius: 30px;
-    padding: 20px;
-    margin: auto;
-    margin-top: 50px;
-    font-size: 20px; 
-    color: aquamarine;
-    
-  }
-
-  button{
-    float:inline-end;
-    padding: 10px;
-    background-color:aquamarine;
-    position: fixed;
-  width: 20%;
-  bottom: 10px;
+button {
+  padding: 12px 20px;
+  background-color: aquamarine;
   border: 3px solid #8AC007;
-  margin-bottom: 100px;
-  margin-left: 25px;
+  border-radius: 8px;
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-weight: bold;
+  cursor: pointer;
+  align-self: center;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  width: 90%;
+  max-width: 280px;
+}
+
+button:hover {
+  background-color: #7dd9c4;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+h3, h4, h5 {
+  position: relative;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  text-align: center;
+  min-height: auto;
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: #ffd700;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  transition: border 0.3s ease, background-color 0.3s ease;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+input[type="radio"]:not(:checked) {
+  background-color: white;
+}
+
+input[type="radio"]:checked {
+  background-color: #5e5e5e;
+  border: 2px solid #5e5e5e;
+  box-shadow: 0 0 10px rgba(83, 83, 83, 0.6);
+}
+
+input[type="radio"]:hover {
+  border-color: #888;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  cursor: pointer;
+  word-wrap: break-word;
+  font-size: clamp(14px, 1.8vw, 18px);
+}
+
+/* Tablet and larger screens */
+@media (min-width: 600px) {
+  #questionpanel {
+    padding: 30px;
+    min-height: 500px;
   }
-  h3
-  {
-    position: fixed;
-    width: 20%;
-    bottom: 150px;
-    margin-bottom: 100px;
-    margin-left: 50px;
+
+  button {
+    width: auto;
+    max-width: 300px;
+    padding: 14px 30px;
   }
-    h4
-    {
-      position: fixed;
-      width: 20%;
-      bottom: 150px;
-      margin-bottom: 100px;
-      margin-left: 50px;
-    }
+}
 
-    h5{
-      position: fixed;
-      width: 20%;
-      bottom: 150px;
-      margin-bottom: 100px;
-      margin-left: 50px;
-    }
+/* Large screens */
+@media (min-width: 1024px) {
+  #questionpanel {
+    max-width: 500px;
+    padding: 40px;
+    min-height: 550px;
+  }
 
-    input[type="radio"] {
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid #ccc;
-      border-radius: 50%;
-      outline: none;
-      cursor: pointer;
-      transition: border 0.3s ease, background-color 0.3s ease;
-      vertical-align: top;
-    }
-    
-    input[type="radio"]:not(:checked) {
-      background-color: white;
-    }
-    
-    input[type="radio"]:checked {
-      background-color: #5e5e5e;
-      border: 2px solid #5e5e5e;
-      box-shadow: 0 0 10px rgba(83, 83, 83, 0.6);
-    }
-    
-    input[type="radio"]:hover {
-      border-color: #888;
-    }
-
-    
-    
+  button {
+    padding: 15px 40px;
+  }
+}
