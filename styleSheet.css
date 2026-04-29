@@ -6,107 +6,104 @@ body {
   margin: 0;
   padding: 40px 16px 60px;
   min-height: 100vh;
+  /* Make sure the body itself is transparent so the canvas shows through */
+  background: transparent; 
   display: flex;
   align-items: flex-start;
   justify-content: center;
   overflow-x: hidden;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* Deep base color */
-  background-color: #02050a;
-  position: relative;
+  font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
-/* --- THE ANIMATION (No extra HTML needed) --- */
-body::before {
-  content: "";
+/* --- THE ANIMATION LAYER --- */
+#bg-canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1; /* Sits behind everything */
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Pushes it behind everything */
+  display: block !important; /* Forces visibility */
   
-  /* The "Neural Network" Dots */
+  /* Deep base color */
+  background-color: #02050a;
+  
+  /* The "Neural Network" Dots - Brighter for visibility */
   background-image: 
-    radial-gradient(circle, rgba(127, 255, 212, 0.2) 1px, transparent 1px),
-    radial-gradient(circle, rgba(61, 217, 164, 0.1) 1.5px, transparent 1.5px);
-  background-size: 50px 50px, 100px 100px;
-  background-position: 0 0;
+    radial-gradient(circle, rgba(127, 255, 212, 0.3) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(61, 217, 164, 0.15) 2px, transparent 2px);
+  background-size: 60px 60px, 120px 120px;
   
-  /* Adds a subtle fade toward the edges */
-  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-  
-  animation: networkDrift 40s linear infinite;
+  /* Faster animation so you can see it moving */
+  animation: networkDrift 20s linear infinite;
 }
 
 @keyframes networkDrift {
-  from { background-position: 0 0, 0 0; }
-  to { background-position: 500px 1000px, 200px 400px; }
+  from { background-position: 0 0; }
+  to { background-position: 120px 240px; }
 }
 
-/* --- QUIZ PANEL --- */
+/* --- THE QUIZ CARD --- */
 #questionpanel {
   position: relative;
-  z-index: 1;
+  z-index: 10; /* Ensures the card is WAY above the background */
   display: flex;
   flex-direction: column;
-  background: rgba(5, 18, 28, 0.8); /* Darker glass */
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(127, 255, 212, 0.15);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-  width: 95%;
+  
+  /* Dark glass effect */
+  background: rgba(5, 18, 28, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  border: 1px solid rgba(127, 255, 212, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  
+  width: 90%;
   max-width: 400px;
-  border-radius: 24px;
-  padding: 30px;
+  border-radius: 20px;
+  padding: 28px;
   color: aquamarine;
+  margin-top: 40px;
 }
 
-#questionpanel p {
-  margin-top: 0;
-  font-size: 1.1em;
-  line-height: 1.5;
-}
-
-/* --- INTERACTIVE ELEMENTS --- */
+/* --- BUTTON & RADIOS --- */
 button {
   width: 100%;
   margin-top: 20px;
   padding: 14px;
-  background: linear-gradient(135deg, aquamarine 0%, #3dd9a4 100%);
+  background: linear-gradient(135deg, #7fffd4 0%, #3dd9a4 100%);
   color: #03120d;
-  font-weight: 700;
+  font-weight: 800;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(127, 255, 212, 0.4);
+  box-shadow: 0 0 20px rgba(127, 255, 212, 0.4);
 }
 
 input[type="radio"] {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: 2px solid rgba(127, 255, 212, 0.5);
   border-radius: 50%;
-  margin-right: 10px;
   vertical-align: middle;
+  margin-right: 10px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 input[type="radio"]:checked {
-  background: aquamarine;
-  box-shadow: 0 0 10px aquamarine;
+  background: #7fffd4;
+  box-shadow: 0 0 10px #7fffd4;
+  border-color: #7fffd4;
 }
 
-/* Label styling */
 label {
   cursor: pointer;
+  font-size: 1.05rem;
   line-height: 2;
 }
