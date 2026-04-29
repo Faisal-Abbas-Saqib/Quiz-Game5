@@ -1,12 +1,9 @@
-
-   fetch("data.json")
+fetch("data.json")
     .then(response => response.json())
     .then(data => {console.log(data);
-
 const quest=document.createElement("p");
 const answer=document.createElement("p");
-
-const r1=document.createElement("input");   // create Radio buttons
+const r1=document.createElement("input");
 const r2=document.createElement("input");
 const r3=document.createElement("input");
     
@@ -18,21 +15,15 @@ r2.setAttribute("name","opt");
     
 r3.setAttribute("type","radio");
 r3.setAttribute("name","opt"); 
-
-const lab1=document.createElement("label");    // label for radio buttons
+const lab1=document.createElement("label");
 const lab2=document.createElement("label");
 const lab3=document.createElement("label");
-
 const btn=document.createElement("button");
 btn.innerHTML="Start the Game";
 document.getElementById("questionpanel").appendChild(btn);
-
-let i=0;  // counter for 5 questions.
-var correctanswer="0"; // counter for correct answers.
-
-
+let i=0;
+var correctanswer="0";
 btn.addEventListener("click",nextquestion);
-
 function nextquestion()
 {       
 if(r1.checked||r2.checked||r3.checked||i==0)
@@ -54,7 +45,6 @@ if(r1.checked||r2.checked||r3.checked||i==0)
     btn.innerHTML="Next"; if(i==5){btn.innerHTML="Finish";}
     
 }
-
 else{   
     btn.innerHTML="Start Again";
     if(i==5){document.getElementById("showresultpanel").innerHTML="Result : "+correctanswer+"/5";}
@@ -69,7 +59,6 @@ document.getElementById("answerCorrect").innerHTML="";
   }
   else{document.getElementById("checkradio_click").innerHTML="Please select one option!!!";}
 }
-
 function disableRadioButtons() {
   if (r1.checked || r2.checked || r3.checked) {
     r1.disabled = true;
@@ -77,7 +66,6 @@ function disableRadioButtons() {
     r3.disabled = true;
   }
 }
-//radio buttons event listener.
 r1.addEventListener("click",checkanswer);
     function checkanswer()
     { document.getElementById("checkradio_click").innerHTML="";
@@ -85,20 +73,16 @@ r1.addEventListener("click",checkanswer);
       if(r1.checked && data[i-1].options[0]==data[i-1].answer)
         {document.getElementById("answerCorrect").innerHTML="Correct answer"; correctanswer++;}
      else {document.getElementById("answerCorrect").innerHTML="Wrong answer";}
-     // Inaktivera efter att vi verifierar att knappen är markerad
      disableRadioButtons();
     }
-
 r2.addEventListener("click",checkanswer2);
     function checkanswer2()
     {   document.getElementById("checkradio_click").innerHTML="";
-
         if(r2.checked && data[i-1].options[1]==data[i-1].answer)
        {document.getElementById("answerCorrect").innerHTML="Correct answer"; correctanswer++;}
      else {document.getElementById("answerCorrect").innerHTML="Wrong answer";}
      disableRadioButtons();
     }
-
 r3.addEventListener("click",checkanswer3);
      function checkanswer3()
      {  document.getElementById("checkradio_click").innerHTML="";
@@ -111,5 +95,3 @@ r3.addEventListener("click",checkanswer3);
      } 
      
 });
-
-
