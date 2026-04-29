@@ -1,49 +1,98 @@
-<script>
-  const canvas = document.getElementById("bg-canvas");
-  const ctx = canvas.getContext("2d");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <link rel="stylesheet" href="styleSheet.css">
+</head>
 
-  let width, height;
-  const fontSize = 16;
-  let columns;
-  let drops = [];
+<body>
 
-  const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  <canvas id="bg-canvas"></canvas>
 
-  function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    columns = Math.floor(width / fontSize);
-    drops = Array(columns).fill(0);
-  }
+  <div id="questionpanel">
+    <div id="feedback-bar">
+      <h5 id="checkradio_click"></h5>
+      <h3 id="answerCorrect"></h3>
+      <h4 id="showresultpanel"></h4>
+    </div>
+  </div>
 
-  function draw() {
-    /* slightly faster fade */
-    ctx.fillStyle = "rgba(3, 7, 15, 0.10)";
-    ctx.fillRect(0, 0, width, height);
+  <script src="Appfront.js"></script>
 
-    ctx.font = fontSize + "px monospace";
+  <!-- 🌿 MINT GEOMETRIC PULSE BACKGROUND -->
+  <script>
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
 
-    for (let i = 0; i < drops.length; i++) {
+    let w, h, t = 0;
 
-      const text = chars[Math.floor(Math.random() * chars.length)];
-
-      ctx.fillStyle = "rgba(0,255,159,0.7)";
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      /* increased speed */
-      if (Math.random() > 0.96) {
-        drops[i]++;
-      }
-
-      if (drops[i] * fontSize > height && Math.random() > 0.98) {
-        drops[i] = 0;
-      }
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     }
-  }
 
-  window.addEventListener("resize", resize);
-  resize();
+    function drawHex(x, y, size, rot, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
 
-  /* faster interval (was 70) */
-  setInterval(draw, 45);
-</script>
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i;
+        const px = size * Math.cos(angle);
+        const py = size * Math.sin(angle);
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+
+      ctx.strokeStyle = `rgba(120, 255, 200, ${alpha})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function animate() {
+      t += 0.003;
+
+      ctx.clearRect(0, 0, w, h);
+
+      /* soft mint gradient background */
+      const bg = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w, h));
+      bg.addColorStop(0, "#06110f");
+      bg.addColorStop(1, "#020806");
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      const spacing = 130;
+
+      for (let x = 0; x < w + spacing; x += spacing) {
+        for (let y = 0; y < h + spacing; y += spacing) {
+
+          const dx = w/2 - x;
+          const dy = h/2 - y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+
+          const pulse = Math.sin(t * 3 - dist * 0.01);
+
+          const size = 16 + pulse * 5;
+          const alpha = 0.12 + pulse * 0.08;
+          const rot = t + dist * 0.002;
+
+          drawHex(x, y, size, rot, alpha);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    animate();
+  </script>
+
+</body>
+</html>
