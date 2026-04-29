@@ -7,16 +7,93 @@
     <link rel="stylesheet" href="styleSheet.css">
 </head>
 <body>
-        
-        <div id="questionpanel">
-        
-            <h3 id="answerCorrect"></h3>
-            
-            <h4 id="showresultpanel"></h4>   
-            <h5 id="checkradio_click"></h5>
-        </div>        
-    <script src="Appfront.js"> 
-    
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="questionpanel">
+        <h3 id="answerCorrect"></h3>
+        <h4 id="showresultpanel"></h4>   
+        <h5 id="checkradio_click"></h5>
+    </div>        
+
+    <script src="Appfront.js"></script>
+
+    <script>
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+
+      function Particle() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.r = Math.random() * 2 + 0.5;
+        this.dx = (Math.random() - 0.5) * 0.4;
+        this.dy = (Math.random() - 0.5) * 0.4;
+        this.alpha = Math.random() * 0.5 + 0.2;
+      }
+
+      function initParticles() {
+        particles = [];
+        const count = Math.floor((W * H) / 9000);
+        for (let i = 0; i < count; i++) particles.push(new Particle());
+      }
+
+      function drawLines() {
+        const maxDist = 120;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < maxDist) {
+              const opacity = (1 - dist / maxDist) * 0.15;
+              ctx.strokeStyle = `rgba(100,220,180,${opacity})`;
+              ctx.lineWidth = 0.6;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+
+        const grad = ctx.createLinearGradient(0, 0, W, H);
+        grad.addColorStop(0,   '#0a0e1a');
+        grad.addColorStop(0.4, '#0d1f2d');
+        grad.addColorStop(1,   '#071a14');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+
+        drawLines();
+
+        particles.forEach(p => {
+          p.x += p.dx;
+          p.y += p.dy;
+          if (p.x < 0 || p.x > W) p.dx *= -1;
+          if (p.y < 0 || p.y > H) p.dy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(100,220,180,${p.alpha})`;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', () => { resize(); initParticles(); });
+      resize();
+      initParticles();
+      animate();
     </script>
 </body>
 </html>
