@@ -6,138 +6,107 @@ body {
   margin: 0;
   padding: 40px 16px 60px;
   min-height: 100vh;
-  /* Deep space base */
-  background: #02050a; 
   display: flex;
   align-items: flex-start;
   justify-content: center;
   overflow-x: hidden;
-  font-family: sans-serif; /* Ensuring clean text */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Deep base color */
+  background-color: #02050a;
+  position: relative;
 }
 
-/* --- The Neural Network Animation --- */
-#bg-canvas {
+/* --- THE ANIMATION (No extra HTML needed) --- */
+body::before {
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  z-index: -1; /* Sits behind everything */
   
-  /* Create the dot grid pattern */
+  /* The "Neural Network" Dots */
   background-image: 
-    radial-gradient(circle, rgba(127, 255, 212, 0.15) 1px, transparent 1px),
-    radial-gradient(circle, rgba(61, 217, 164, 0.05) 2px, transparent 2px);
-  background-size: 40px 40px, 80px 80px;
-  background-position: 0 0, 20px 20px;
+    radial-gradient(circle, rgba(127, 255, 212, 0.2) 1px, transparent 1px),
+    radial-gradient(circle, rgba(61, 217, 164, 0.1) 1.5px, transparent 1.5px);
+  background-size: 50px 50px, 100px 100px;
+  background-position: 0 0;
   
-  /* Add a soft center glow to stop the dots from being too harsh */
-  mask-image: radial-gradient(circle at center, black 30%, rgba(0,0,0,0.4) 100%);
-  -webkit-mask-image: radial-gradient(circle at center, black 30%, rgba(0,0,0,0.4) 100%);
+  /* Adds a subtle fade toward the edges */
+  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
   
-  animation: drift-nodes 30s linear infinite;
+  animation: networkDrift 40s linear infinite;
 }
 
-/* Smooth diagonal drift */
-@keyframes drift-nodes {
-  from { background-position: 0 0, 20px 20px; }
-  to { background-position: 120px 120px, 140px 140px; }
+@keyframes networkDrift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 500px 1000px, 200px 400px; }
 }
 
+/* --- QUIZ PANEL --- */
 #questionpanel {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  /* Darker glass for better contrast against the dots */
-  background: rgba(5, 12, 20, 0.82); 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(127, 255, 212, 0.2);
-  box-shadow:
-    0 0 0 1px rgba(127, 255, 212, 0.05) inset,
-    0 20px 50px rgba(0, 0, 0, 0.6);
-  width: 90%;
-  max-width: 380px;
-  border-radius: 20px;
-  padding: 24px 22px 20px;
-  font-size: 16px;
+  background: rgba(5, 18, 28, 0.8); /* Darker glass */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(127, 255, 212, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  width: 95%;
+  max-width: 400px;
+  border-radius: 24px;
+  padding: 30px;
   color: aquamarine;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  margin-top: 30px;
 }
 
-/* --- Elements & Interactivity --- */
-
-#questionpanel > p:first-of-type {
+#questionpanel p {
   margin-top: 0;
-  margin-bottom: 14px;
+  font-size: 1.1em;
   line-height: 1.5;
-  font-weight: 500;
 }
 
+/* --- INTERACTIVE ELEMENTS --- */
 button {
-  order: 20;
-  display: block;
   width: 100%;
-  margin-top: 14px;
-  padding: 12px 16px;
+  margin-top: 20px;
+  padding: 14px;
   background: linear-gradient(135deg, aquamarine 0%, #3dd9a4 100%);
   color: #03120d;
-  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.03em;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  opacity: 0.9;
-  box-shadow: 0 0 15px rgba(127, 255, 212, 0.3);
-  transform: translateY(-1px);
-}
-
-button:active {
-  transform: scale(0.97);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(127, 255, 212, 0.4);
 }
 
 input[type="radio"] {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(127, 255, 212, 0.4);
+  border: 2px solid rgba(127, 255, 212, 0.5);
   border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.2s;
+  margin-right: 10px;
   vertical-align: middle;
-  flex-shrink: 0;
-  margin-right: 8px;
-  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 input[type="radio"]:checked {
-  background-color: aquamarine;
-  border-color: aquamarine;
-  box-shadow: 0 0 10px rgba(127, 255, 212, 0.5);
+  background: aquamarine;
+  box-shadow: 0 0 10px aquamarine;
 }
 
-/* Feedback Headings */
-h3 { color: #7fffd4; font-size: 15px; margin: 4px 0 2px; }
-h4 { color: aquamarine; font-size: 14px; margin: 4px 0 2px; }
-h5 { color: #ff9f9f; font-size: 13px; margin: 0 0 2px; }
-
-/* Responsive Adjustments */
-@media (min-width: 768px) {
-  #questionpanel { max-width: 440px; font-size: 17px; padding: 28px 26px 22px; }
-  button { font-size: 16px; }
-}
-
-@media (min-width: 1024px) {
-  body { align-items: center; padding-top: 0; }
-  #questionpanel { max-width: 400px; font-size: 18px; }
+/* Label styling */
+label {
+  cursor: pointer;
+  line-height: 2;
 }
