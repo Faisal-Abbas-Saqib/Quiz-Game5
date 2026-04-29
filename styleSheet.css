@@ -6,12 +6,15 @@ body {
   margin: 0;
   padding: 40px 16px 60px;
   min-height: 100vh;
-  background: #03070f;
+  /* Deep base color */
+  background: #02050a; 
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  overflow-x: hidden;
 }
 
+/* --- Animated Background Section --- */
 #bg-canvas {
   position: fixed;
   top: 0;
@@ -20,39 +23,69 @@ body {
   height: 100%;
   z-index: 0;
   pointer-events: none;
+  /* Creating the mesh gradients */
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(127, 255, 212, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(61, 217, 164, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(3, 7, 15, 1) 0%, #02050a 100%);
+  filter: blur(60px);
+  animation: drift 25s infinite alternate ease-in-out;
 }
 
+/* Slow, organic drifting movement */
+@keyframes drift {
+  0% {
+    transform: scale(1) translate(0, 0);
+    background-position: 0% 0%;
+  }
+  50% {
+    transform: scale(1.1) translate(2%, 3%);
+    background-position: 100% 50%;
+  }
+  100% {
+    transform: scale(1.05) translate(-1%, -2%);
+    background-position: 0% 100%;
+  }
+}
+
+/* Subtle glow pulse for the card container */
 #questionpanel {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  background: rgba(5, 18, 28, 0.70);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(80, 220, 180, 0.15);
+  background: rgba(5, 18, 28, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(127, 255, 212, 0.15);
   box-shadow:
-    0 0 0 1px rgba(80,220,180,0.05) inset,
-    0 12px 48px rgba(0,0,0,0.55);
+    0 0 0 1px rgba(80, 220, 180, 0.05) inset,
+    0 20px 50px rgba(0, 0, 0, 0.6);
   width: 90%;
   max-width: 380px;
-  border-radius: 20px;
+  border-radius: 24px; /* Slightly smoother corners */
   padding: 24px 22px 20px;
   font-size: 16px;
   color: aquamarine;
   word-wrap: break-word;
   overflow-wrap: break-word;
   margin-top: 30px;
+  transition: border-color 0.4s ease;
 }
 
-/* question text */
+/* Hovering the panel adds a soft light hint */
+#questionpanel:hover {
+  border-color: rgba(127, 255, 212, 0.3);
+}
+
+/* --- Rest of your original styling --- */
+
 #questionpanel > p:first-of-type {
   margin-top: 0;
   margin-bottom: 14px;
   line-height: 1.5;
 }
 
-/* radio + label rows */
 #questionpanel > input[type="radio"] {
   margin-top: 10px;
 }
@@ -63,14 +96,12 @@ body {
   line-height: 1.6;
 }
 
-/* feedback bar sits after options, before button */
 #feedback-bar {
   order: 10;
   margin-top: 14px;
   min-height: 24px;
 }
 
-/* button pushed to very bottom */
 button {
   order: 20;
   display: block;
@@ -85,120 +116,49 @@ button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.12s;
+  transition: opacity 0.2s, transform 0.12s, box-shadow 0.2s;
   position: static;
-  float: none;
-  left: auto;
-  bottom: auto;
-  transform: none;
-  margin-left: 0;
-  margin-bottom: 0;
 }
 
-button:hover  { opacity: 0.88; }
+button:hover  { 
+  opacity: 0.95;
+  box-shadow: 0 0 15px rgba(127, 255, 212, 0.4);
+}
+
 button:active { transform: scale(0.97); }
 
-/* feedback headings — all in flow, no fixed positioning */
-h3 {
-  position: static;
-  width: auto;
-  bottom: auto;
-  left: auto;
-  transform: none;
-  margin: 4px 0 2px;
-  margin-left: 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: #7fffd4;
-}
-
-h4 {
-  position: static;
-  width: auto;
-  bottom: auto;
-  left: auto;
-  transform: none;
-  margin: 4px 0 2px;
-  margin-left: 0;
-  font-size: 14px;
-  color: aquamarine;
-}
-
-h5 {
-  position: static;
-  width: auto;
-  bottom: auto;
-  left: auto;
-  transform: none;
-  margin: 0 0 2px;
-  margin-left: 0;
-  font-size: 13px;
-  color: #ff9f9f;
-}
+h3 { margin: 4px 0 2px; font-size: 15px; font-weight: 600; color: #7fffd4; }
+h4 { margin: 4px 0 2px; font-size: 14px; color: aquamarine; }
+h5 { margin: 0 0 2px; font-size: 13px; color: #ff9f9f; }
 
 input[type="radio"] {
   appearance: none;
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
   border: 2px solid rgba(127,255,212,0.5);
   border-radius: 50%;
   outline: none;
   cursor: pointer;
-  transition: border 0.25s, background-color 0.25s, box-shadow 0.25s;
+  transition: all 0.25s;
   vertical-align: middle;
   flex-shrink: 0;
-  margin-right: 5px;
-  background-color: rgba(255,255,255,0.08);
-}
-
-input[type="radio"]:not(:checked) {
-  background-color: rgba(255,255,255,0.08);
+  margin-right: 8px;
+  background-color: rgba(255,255,255,0.05);
 }
 
 input[type="radio"]:checked {
   background-color: aquamarine;
   border: 2px solid aquamarine;
-  box-shadow: 0 0 8px rgba(127,255,212,0.6);
+  box-shadow: 0 0 10px rgba(127,255,212,0.6);
 }
 
-input[type="radio"]:hover {
-  border-color: aquamarine;
-}
-
-input[type="radio"]:disabled {
-  opacity: 0.45;
-  cursor: default;
-}
-
-/* Tablet 768px+ */
+/* Responsive adjustments */
 @media (min-width: 768px) {
-  #questionpanel {
-    max-width: 440px;
-    font-size: 17px;
-    padding: 28px 26px 22px;
-  }
+  #questionpanel { max-width: 440px; font-size: 17px; padding: 28px 26px 22px; }
   button { font-size: 16px; }
 }
 
-/* Desktop 1024px+ */
 @media (min-width: 1024px) {
-  body {
-    align-items: center;
-    padding-top: 0;
-    min-height: 100vh;
-  }
-  #questionpanel {
-    max-width: 400px;
-    font-size: 18px;
-    margin-top: 0;
-  }
-}
-
-/* Large 1440px+ */
-@media (min-width: 1440px) {
-  #questionpanel {
-    max-width: 440px;
-    font-size: 19px;
-    padding: 32px 28px 26px;
-  }
+  body { align-items: center; padding-top: 0; }
+  #questionpanel { max-width: 400px; font-size: 18px; margin-top: 0; }
 }
