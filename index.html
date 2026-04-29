@@ -1,70 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz Game</title>
-  <link rel="stylesheet" href="styleSheet.css">
-</head>
-<body>
+<script>
+  const canvas = document.getElementById("bg-canvas");
+  const ctx = canvas.getContext("2d");
 
-  <canvas id="bg-canvas"></canvas>
+  let width, height;
+  const fontSize = 16;
+  let columns;
+  let drops = [];
 
-  <div id="questionpanel">
-    <div id="feedback-bar">
-      <h5 id="checkradio_click"></h5>
-      <h3 id="answerCorrect"></h3>
-      <h4 id="showresultpanel"></h4>
-    </div>
-  </div>
+  const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  <script src="Appfront.js"></script>
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    columns = Math.floor(width / fontSize);
+    drops = Array(columns).fill(0);
+  }
 
-  <script>
-    /* ===== MATRIX RAIN BACKGROUND ===== */
-    const canvas = document.getElementById("bg-canvas");
-    const ctx = canvas.getContext("2d");
+  function draw() {
+    /* slightly faster fade */
+    ctx.fillStyle = "rgba(3, 7, 15, 0.10)";
+    ctx.fillRect(0, 0, width, height);
 
-    let width, height;
-    const fontSize = 14;
-    let columns;
-    let drops = [];
+    ctx.font = fontSize + "px monospace";
 
-    const chars = "アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let i = 0; i < drops.length; i++) {
 
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      columns = Math.floor(width / fontSize);
-      drops = Array(columns).fill(1);
-    }
+      const text = chars[Math.floor(Math.random() * chars.length)];
 
-    function draw() {
-      /* fade effect (trail) */
-      ctx.fillStyle = "rgba(3, 7, 15, 0.15)";
-      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "rgba(0,255,159,0.7)";
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-      ctx.fillStyle = "#00ff9f";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > height && Math.random() > 0.40) {
-          drops[i] = 0;
-        }
-
+      /* increased speed */
+      if (Math.random() > 0.96) {
         drops[i]++;
       }
+
+      if (drops[i] * fontSize > height && Math.random() > 0.98) {
+        drops[i] = 0;
+      }
     }
+  }
 
-    window.addEventListener("resize", resize);
-    resize();
+  window.addEventListener("resize", resize);
+  resize();
 
-    setInterval(draw, 40);
-  </script>
-
-</body>
-</html>
+  /* faster interval (was 70) */
+  setInterval(draw, 45);
+</script>
