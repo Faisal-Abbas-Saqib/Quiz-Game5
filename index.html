@@ -1,54 +1,70 @@
-<script>
-  const canvas = document.getElementById("bg-canvas");
-  const ctx = canvas.getContext("2d");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <link rel="stylesheet" href="styleSheet.css">
+</head>
+<body>
 
-  let width, height;
-  const fontSize = 16;
-  let columns;
-  let drops = [];
+  <canvas id="bg-canvas"></canvas>
 
-  const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  <div id="questionpanel">
+    <div id="feedback-bar">
+      <h5 id="checkradio_click"></h5>
+      <h3 id="answerCorrect"></h3>
+      <h4 id="showresultpanel"></h4>
+    </div>
+  </div>
 
-  function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    columns = Math.floor(width / fontSize);
-    drops = Array(columns).fill(0);
-  }
+  <script src="Appfront.js"></script>
 
-  function draw() {
-    /* cleaner trailing fade */
-    ctx.fillStyle = "rgba(3, 7, 15, 0.12)";
-    ctx.fillRect(0, 0, width, height);
+  <script>
+    /* ===== MATRIX RAIN BACKGROUND ===== */
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
 
-    ctx.font = fontSize + "px monospace";
+    let width, height;
+    const fontSize = 14;
+    let columns;
+    let drops = [];
 
-    for (let i = 0; i < drops.length; i++) {
+    const chars = "アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-      const text = chars[Math.floor(Math.random() * chars.length)];
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      columns = Math.floor(width / fontSize);
+      drops = Array(columns).fill(1);
+    }
 
-      /* brighter leading feel */
-      ctx.fillStyle = "rgba(0,255,159,0.75)";
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    function draw() {
+      /* fade effect (trail) */
+      ctx.fillStyle = "rgba(3, 7, 15, 0.15)";
+      ctx.fillRect(0, 0, width, height);
 
-      /* smoother consistent movement */
-      drops[i] += Math.random() > 0.5 ? 1 : 0;
+      ctx.fillStyle = "#00ff9f";
+      ctx.font = fontSize + "px monospace";
 
-      /* reset when off screen */
-      if (drops[i] * fontSize > height && Math.random() > 0.97) {
-        drops[i] = 0;
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
       }
     }
-  }
 
-  window.addEventListener("resize", resize);
-  resize();
+    window.addEventListener("resize", resize);
+    resize();
 
-  /* smoother animation loop instead of setInterval */
-  function animate() {
-    draw();
-    requestAnimationFrame(animate);
-  }
+    setInterval(draw, 40);
+  </script>
 
-  animate();
-</script>
+</body>
+</html>
