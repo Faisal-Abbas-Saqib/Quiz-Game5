@@ -6,15 +6,16 @@ body {
   margin: 0;
   padding: 40px 16px 60px;
   min-height: 100vh;
-  /* Deep base color */
+  /* Deep space base */
   background: #02050a; 
   display: flex;
   align-items: flex-start;
   justify-content: center;
   overflow-x: hidden;
+  font-family: sans-serif; /* Ensuring clean text */
 }
 
-/* --- Animated Background Section --- */
+/* --- The Neural Network Animation --- */
 #bg-canvas {
   position: fixed;
   top: 0;
@@ -23,83 +24,58 @@ body {
   height: 100%;
   z-index: 0;
   pointer-events: none;
-  /* Creating the mesh gradients */
-  background: 
-    radial-gradient(circle at 10% 20%, rgba(127, 255, 212, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(61, 217, 164, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(3, 7, 15, 1) 0%, #02050a 100%);
-  filter: blur(60px);
-  animation: drift 25s infinite alternate ease-in-out;
+  
+  /* Create the dot grid pattern */
+  background-image: 
+    radial-gradient(circle, rgba(127, 255, 212, 0.15) 1px, transparent 1px),
+    radial-gradient(circle, rgba(61, 217, 164, 0.05) 2px, transparent 2px);
+  background-size: 40px 40px, 80px 80px;
+  background-position: 0 0, 20px 20px;
+  
+  /* Add a soft center glow to stop the dots from being too harsh */
+  mask-image: radial-gradient(circle at center, black 30%, rgba(0,0,0,0.4) 100%);
+  -webkit-mask-image: radial-gradient(circle at center, black 30%, rgba(0,0,0,0.4) 100%);
+  
+  animation: drift-nodes 30s linear infinite;
 }
 
-/* Slow, organic drifting movement */
-@keyframes drift {
-  0% {
-    transform: scale(1) translate(0, 0);
-    background-position: 0% 0%;
-  }
-  50% {
-    transform: scale(1.1) translate(2%, 3%);
-    background-position: 100% 50%;
-  }
-  100% {
-    transform: scale(1.05) translate(-1%, -2%);
-    background-position: 0% 100%;
-  }
+/* Smooth diagonal drift */
+@keyframes drift-nodes {
+  from { background-position: 0 0, 20px 20px; }
+  to { background-position: 120px 120px, 140px 140px; }
 }
 
-/* Subtle glow pulse for the card container */
 #questionpanel {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  background: rgba(5, 18, 28, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(127, 255, 212, 0.15);
+  /* Darker glass for better contrast against the dots */
+  background: rgba(5, 12, 20, 0.82); 
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(127, 255, 212, 0.2);
   box-shadow:
-    0 0 0 1px rgba(80, 220, 180, 0.05) inset,
+    0 0 0 1px rgba(127, 255, 212, 0.05) inset,
     0 20px 50px rgba(0, 0, 0, 0.6);
   width: 90%;
   max-width: 380px;
-  border-radius: 24px; /* Slightly smoother corners */
+  border-radius: 20px;
   padding: 24px 22px 20px;
   font-size: 16px;
   color: aquamarine;
   word-wrap: break-word;
   overflow-wrap: break-word;
   margin-top: 30px;
-  transition: border-color 0.4s ease;
 }
 
-/* Hovering the panel adds a soft light hint */
-#questionpanel:hover {
-  border-color: rgba(127, 255, 212, 0.3);
-}
-
-/* --- Rest of your original styling --- */
+/* --- Elements & Interactivity --- */
 
 #questionpanel > p:first-of-type {
   margin-top: 0;
   margin-bottom: 14px;
   line-height: 1.5;
-}
-
-#questionpanel > input[type="radio"] {
-  margin-top: 10px;
-}
-
-#questionpanel > label {
-  display: inline;
-  vertical-align: middle;
-  line-height: 1.6;
-}
-
-#feedback-bar {
-  order: 10;
-  margin-top: 14px;
-  min-height: 24px;
+  font-weight: 500;
 }
 
 button {
@@ -116,43 +92,46 @@ button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.12s, box-shadow 0.2s;
-  position: static;
+  transition: all 0.2s ease;
 }
 
-button:hover  { 
-  opacity: 0.95;
-  box-shadow: 0 0 15px rgba(127, 255, 212, 0.4);
+button:hover {
+  opacity: 0.9;
+  box-shadow: 0 0 15px rgba(127, 255, 212, 0.3);
+  transform: translateY(-1px);
 }
 
-button:active { transform: scale(0.97); }
-
-h3 { margin: 4px 0 2px; font-size: 15px; font-weight: 600; color: #7fffd4; }
-h4 { margin: 4px 0 2px; font-size: 14px; color: aquamarine; }
-h5 { margin: 0 0 2px; font-size: 13px; color: #ff9f9f; }
+button:active {
+  transform: scale(0.97);
+}
 
 input[type="radio"] {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(127,255,212,0.5);
+  border: 2px solid rgba(127, 255, 212, 0.4);
   border-radius: 50%;
   outline: none;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.2s;
   vertical-align: middle;
   flex-shrink: 0;
   margin-right: 8px;
-  background-color: rgba(255,255,255,0.05);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 input[type="radio"]:checked {
   background-color: aquamarine;
-  border: 2px solid aquamarine;
-  box-shadow: 0 0 10px rgba(127,255,212,0.6);
+  border-color: aquamarine;
+  box-shadow: 0 0 10px rgba(127, 255, 212, 0.5);
 }
 
-/* Responsive adjustments */
+/* Feedback Headings */
+h3 { color: #7fffd4; font-size: 15px; margin: 4px 0 2px; }
+h4 { color: aquamarine; font-size: 14px; margin: 4px 0 2px; }
+h5 { color: #ff9f9f; font-size: 13px; margin: 0 0 2px; }
+
+/* Responsive Adjustments */
 @media (min-width: 768px) {
   #questionpanel { max-width: 440px; font-size: 17px; padding: 28px 26px 22px; }
   button { font-size: 16px; }
@@ -160,5 +139,5 @@ input[type="radio"]:checked {
 
 @media (min-width: 1024px) {
   body { align-items: center; padding-top: 0; }
-  #questionpanel { max-width: 400px; font-size: 18px; margin-top: 0; }
+  #questionpanel { max-width: 400px; font-size: 18px; }
 }
