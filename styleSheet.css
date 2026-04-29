@@ -6,35 +6,34 @@
 /* ===== BACKGROUND ===== */
 body {
   margin: 0;
-  padding: 40px 16px 60px;
   min-height: 100vh;
 
   display: flex;
-  align-items: flex-start;
   justify-content: center;
+  align-items: flex-start;
 
-  background: #03070f;
+  padding: 40px 16px;
   overflow: hidden;
-}
 
-/* subtle dark overlay for readability */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 0;
+  background: #020806;
 }
 
 /* canvas */
 #bg-canvas {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
-  pointer-events: none;
+}
+
+/* subtle depth overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.55));
+  z-index: 0;
 }
 
 /* ===== PANEL ===== */
@@ -42,85 +41,46 @@ body::before {
   position: relative;
   z-index: 1;
 
-  display: flex;
-  flex-direction: column;
-
-  background: rgba(5, 18, 28, 0.75);
-  backdrop-filter: blur(18px);
-
-  border: 1px solid rgba(0, 255, 159, 0.2);
-  box-shadow:
-    0 0 0 1px rgba(0,255,159,0.05) inset,
-    0 12px 48px rgba(0,0,0,0.7);
-
   width: 90%;
   max-width: 380px;
-  border-radius: 20px;
 
   padding: 24px;
-  color: #7fffd4;
+
+  background: rgba(10, 25, 20, 0.72);
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(120, 255, 200, 0.15);
+  border-radius: 18px;
+
+  color: #bfffe6;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
 
   transition: 0.3s;
 }
 
 #questionpanel:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    0 0 0 1px rgba(0,255,159,0.08) inset,
-    0 20px 60px rgba(0,0,0,0.8);
+  transform: translateY(-4px);
 }
 
-/* text */
-#questionpanel p {
-  margin-bottom: 12px;
+/* ===== TEXT ===== */
+h3 {
+  color: #7fffd4;
+  margin: 4px 0;
+}
+
+h4 {
+  color: #a8ffe0;
+  margin: 4px 0;
+}
+
+h5 {
+  color: #ff9e9e;
+  margin: 4px 0;
+}
+
+/* optional polish for readability */
+p {
+  color: #d7fff2;
   line-height: 1.5;
 }
-
-/* ===== RADIO ===== */
-input[type="radio"] {
-  appearance: none;
-  width: 17px;
-  height: 17px;
-  border: 2px solid rgba(0,255,159,0.5);
-  border-radius: 50%;
-  margin-right: 6px;
-  cursor: pointer;
-  background: rgba(255,255,255,0.08);
-}
-
-input[type="radio"]:checked {
-  background: #00ff9f;
-  border-color: #00ff9f;
-  box-shadow: 0 0 8px rgba(0,255,159,0.7);
-}
-
-/* ===== BUTTON ===== */
-button {
-  margin-top: 14px;
-  padding: 12px;
-  width: 100%;
-
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-
-  background: linear-gradient(135deg, #00ff9f, #00c37a);
-  color: #03120d;
-  font-weight: bold;
-
-  transition: 0.2s;
-}
-
-button:hover {
-  opacity: 0.9;
-  box-shadow: 0 0 14px rgba(0,255,159,0.4);
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-/* ===== FEEDBACK ===== */
-h3 { color: #00ff9f; margin: 4px 0; }
-h4 { color: #7fffd4; margin: 4px 0; }
-h5 { color: #ff9f9f; margin: 4px 0; }
