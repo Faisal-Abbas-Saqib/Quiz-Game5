@@ -3,29 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz App</title>
+  <title>Quiz Game</title>
   <link rel="stylesheet" href="styleSheet.css">
 </head>
 <body>
 
-  <div id="questionpanel">
+  <div id="app-wrapper">
 
-    <!-- Pulse ring timer -->
-    <div id="timer-container">
-      <div id="timer-widget">
-        <div id="pulse-ring"></div>
-        <div id="pulse-core">
-          <span id="timer-num">15</span>
+    <!-- Heading -->
+    <header id="quiz-header">
+      <div id="quiz-icon">?</div>
+      <h1 id="quiz-title">Quiz Game</h1>
+      <p id="quiz-subtitle">5 questions &nbsp;·&nbsp; 15 seconds each &nbsp;·&nbsp; Test your knowledge</p>
+    </header>
+
+    <!-- Card -->
+    <div id="questionpanel">
+
+      <div id="timer-container">
+        <div id="timer-widget">
+          <div id="pulse-ring"></div>
+          <div id="pulse-core">
+            <span id="timer-num">15</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- question + options injected by JS here -->
+      <div id="feedback-bar">
+        <h5 id="checkradio_click"></h5>
+        <h3 id="answerCorrect"></h3>
+        <h4 id="showresultpanel"></h4>
+      </div>
 
-    <div id="feedback-bar">
-      <h5 id="checkradio_click"></h5>
-      <h3 id="answerCorrect"></h3>
-      <h4 id="showresultpanel"></h4>
     </div>
 
   </div>
