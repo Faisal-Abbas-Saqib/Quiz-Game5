@@ -23,6 +23,7 @@ fetch("data.json")
     let i             = 0;
     let correctanswer = 0;
     let answered      = false;
+    let gameOver      = false;   /* NEW — tracks if we're on the result screen */
 
     /* ── Timer ── */
     const TIMER_SECONDS = 15;
@@ -72,50 +73,51 @@ fetch("data.json")
       }
     }
 
-    /* ── Called ONLY when timer hits 0, bypasses radio check ── */
+    /* ── Auto-advance when timer hits 0 — bypasses radio check ── */
     function autoAdvance() {
       if (answered) return;
       answered = true;
       r1.disabled = true; r2.disabled = true; r3.disabled = true;
 
       const ac = document.getElementById("answerCorrect");
-      ac.innerHTML  = "⏱ Time's up!";
-      ac.className  = "wrong";
+      ac.innerHTML = "⏱ Time's up!";
+      ac.className = "wrong";
 
       setTimeout(() => {
         if (i < 5) {
-          loadQuestion();          /* go straight to next question */
+          loadQuestion();
         } else {
           showResult();
         }
       }, 900);
     }
 
-    /* ── Render a question — single place that updates the DOM ── */
+    /* ── Render a question ── */
     function loadQuestion() {
       stopTimer();
+      gameOver = false;
 
       quest.style.display = "";
       r1.style.display = ""; lab1.style.display = "";
       r2.style.display = ""; lab2.style.display = "";
       r3.style.display = ""; lab3.style.display = "";
 
-      quest.innerHTML  = (i + 1) + ".  " + data[i].question;
-      lab1.innerHTML   = "\u00a0" + data[i].options[0];
-      lab2.innerHTML   = "\u00a0" + data[i].options[1];
-      lab3.innerHTML   = "\u00a0" + data[i].options[2];
+      quest.innerHTML = (i + 1) + ".  " + data[i].question;
+      lab1.innerHTML  = "\u00a0" + data[i].options[0];
+      lab2.innerHTML  = "\u00a0" + data[i].options[1];
+      lab3.innerHTML  = "\u00a0" + data[i].options[2];
 
       r1.checked  = false; r2.checked  = false; r3.checked  = false;
       r1.disabled = false; r2.disabled = false; r3.disabled = false;
 
-      document.getElementById("answerCorrect").innerHTML  = "";
-      document.getElementById("answerCorrect").className  = "";
+      document.getElementById("answerCorrect").innerHTML   = "";
+      document.getElementById("answerCorrect").className   = "";
       document.getElementById("checkradio_click").innerHTML = "";
+      document.getElementById("showresultpanel").innerHTML  = "";
 
       i++;
       btn.innerHTML = i < 5 ? "Next" : "Finish";
 
-      /* ensure elements are inside panel */
       const panel = document.getElementById("questionpanel");
       panel.appendChild(quest);
       panel.appendChild(r1);   panel.appendChild(lab1);
@@ -128,6 +130,7 @@ fetch("data.json")
     /* ── Result screen ── */
     function showResult() {
       stopTimer();
+      gameOver = true;
       document.getElementById("timer-container").style.display = "none";
 
       quest.style.display  = "none";
@@ -139,8 +142,7 @@ fetch("data.json")
       document.getElementById("answerCorrect").innerHTML    = "";
 
       const score = correctanswer;
-      const total = 5;
-      const pct   = Math.round((score / total) * 100);
+      const pct   = Math.round((score / 5) * 100);
       const grade = score === 5 ? "Perfect score! 🏆"
                   : score >= 4 ? "Great job! 🎉"
                   : score >= 3 ? "Good effort! 👍"
@@ -150,16 +152,14 @@ fetch("data.json")
       document.getElementById("showresultpanel").innerHTML = `
         <div class="result-box">
           <div class="result-title">Quiz Complete</div>
-          <div class="result-score">${score}<span class="result-total">/ ${total}</span></div>
+          <div class="result-score">${score}<span class="result-total">/ 5</span></div>
           <div class="result-pct">${pct}%</div>
           <div class="result-bar-track">
-            <div class="result-bar-fill" style="width:0%"
-                 id="rbar"></div>
+            <div class="result-bar-fill" style="width:0%" id="rbar"></div>
           </div>
           <div class="result-grade">${grade}</div>
         </div>`;
 
-      /* animate bar after paint */
       setTimeout(() => {
         const bar = document.getElementById("rbar");
         if (bar) bar.style.width = pct + "%";
@@ -168,25 +168,36 @@ fetch("data.json")
       btn.innerHTML = "Play Again";
     }
 
-    /* ── Button click handler ── */
+    /* ── Button handler ── */
     btn.addEventListener("click", nextquestion);
 
     function nextquestion() {
-      /* starting fresh */
-      if (i === 0) {
+
+      /* Play Again — reset everything and start fresh */
+      if (gameOver) {
+        i             = 0;
         correctanswer = 0;
-        document.getElementById("showresultpanel").innerHTML = "";
+        answered      = false;
+        gameOver      = false;
         loadQuestion();
         return;
       }
 
-      /* between questions: require an answer or time must have expired */
+      /* First start */
+      if (i === 0) {
+        correctanswer = 0;
+        answered      = false;
+        loadQuestion();
+        return;
+      }
+
+      /* Mid-game: player hasn't answered yet */
       if (!answered) {
         document.getElementById("checkradio_click").innerHTML = "Please select one option!";
         return;
       }
 
-      /* advance */
+      /* Advance to next question or show result */
       if (i < 5) {
         loadQuestion();
       } else {
@@ -194,7 +205,7 @@ fetch("data.json")
       }
     }
 
-    /* ── Answer checkers ── */
+    /* ── Answer checker ── */
     function markAnswer(optionIndex) {
       if (answered) return;
       stopTimer();
